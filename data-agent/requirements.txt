@@ -1,0 +1,22 @@
+# Data Agent Dependencies
+
+# Core
+openai>=1.0.0
+pydantic>=2.0.0
+numpy>=1.24.0
+
+# Vector Database
+chromadb>=0.4.0
+
+# Database
+sqlalchemy>=2.0.0
+
+# Testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+
+# Optional: for PostgreSQL
+# psycopg2-binary>=2.9.0
+
+# Optional: for MySQL
+# pymysql>=1.0.0
