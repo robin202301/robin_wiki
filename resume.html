@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人简历 - 团队经理</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "微软雅黑", "Microsoft YaHei", "SimSun", Arial, sans-serif;
+            font-size: 11pt;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #ffffff;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: #ffffff;
+        }
+        
+        /* 头部区域 */
+        .header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+            color: #ffffff;
+            padding: 35px 40px;
+            border-bottom: 4px solid #d4af37;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .name-section h1 {
+            font-size: 32pt;
+            font-weight: 300;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+        
+        .name-section .title {
+            font-size: 14pt;
+            color: #d4af37;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+        
+        .contact-info {
+            text-align: right;
+            font-size: 10pt;
+            line-height: 1.8;
+        }
+        
+        .contact-info div {
+            margin-bottom: 4px;
+        }
+        
+        /* 主体内容 */
+        .content {
+            padding: 30px 40px;
+        }
+        
+        /* 章节标题 */
+        .section {
+            margin-bottom: 28px;
+        }
+        
+        .section-title {
+            font-size: 14pt;
+            color: #1e3a5f;
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #d4af37;
+            margin-bottom: 18px;
+            letter-spacing: 1px;
+        }
+        
+        /* 职业概述 */
+        .summary {
+            font-size: 10.5pt;
+            line-height: 1.8;
+            color: #34495e;
+            text-align: justify;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-left: 3px solid #d4af37;
+        }
+        
+        /* 核心技能 */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 30px;
+            font-size: 10.5pt;
+        }
+        
+        .skill-item {
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-left: 2px solid #2c5282;
+        }
+        
+        /* 工作经历 */
+        .job {
+            margin-bottom: 22px;
+        }
+        
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .job-title {
+            font-size: 12pt;
+            color: #1e3a5f;
+            font-weight: 600;
+        }
+        
+        .job-company {
+            font-size: 11pt;
+            color: #2c5282;
+            font-weight: 500;
+        }
+        
+        .job-period {
+            font-size: 10pt;
+            color: #7f8c8d;
+            font-weight: 400;
+        }
+        
+        .job-content {
+            margin-top: 10px;
+        }
+        
+        .job-content ul {
+            margin-left: 20px;
+            font-size: 10.5pt;
+            line-height: 1.7;
+        }
+        
+        .job-content li {
+            margin-bottom: 6px;
+            color: #34495e;
+        }
+        
+        .job-content li::marker {
+            color: #d4af37;
+        }
+        
+        /* 项目经历 */
+        .project {
+            margin-bottom: 18px;
+            padding: 12px 15px;
+            background: #fafbfc;
+            border-left: 3px solid #2c5282;
+        }
+        
+        .project-name {
+            font-size: 11pt;
+            color: #1e3a5f;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        
+        .project-role {
+            font-size: 10pt;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+        }
+        
+        .project-desc {
+            font-size: 10.5pt;
+            line-height: 1.7;
+            color: #34495e;
+        }
+        
+        /* 工作成果 */
+        .achievements {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .achievement-item {
+            padding: 10px 12px;
+            background: #f8f9fa;
+            border-left: 2px solid #d4af37;
+            font-size: 10.5pt;
+        }
+        
+        .achievement-number {
+            font-size: 18pt;
+            color: #1e3a5f;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .achievement-label {
+            color: #7f8c8d;
+            font-size: 9.5pt;
+        }
+        
+        /* 自我评价 */
+        .evaluation {
+            font-size: 10.5pt;
+            line-height: 1.8;
+            color: #34495e;
+            text-align: justify;
+        }
+        
+        .evaluation p {
+            margin-bottom: 10px;
+        }
+        
+        /* 分隔线 */
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, #d4af37, #e0e0e0, #d4af37);
+            margin: 25px 0;
+        }
+        
+        @media print {
+            body {
+                font-size: 10.5pt;
+            }
+            .container {
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <div class="header">
+            <div class="header-content">
+                <div class="name-section">
+                    <h1>您的姓名</h1>
+                    <div class="title">团队经理 · 银行信用卡业务管理</div>
+                </div>
+                <div class="contact-info">
+                    <div>📱 138-XXXX-XXXX</div>
+                    <div>📧 your.email@example.com</div>
+                    <div>📍 上海市浦东新区</div>
+                    <div>🎂 1990年X月 · 已婚</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- 职业概述 -->
+            <div class="section">
+                <div class="section-title">职业概述 PROFESSIONAL SUMMARY</div>
+                <div class="summary">
+                    资深银行信用卡业务管理专家，拥有8年以上银行金融风控及信用卡业务运营经验，具备大型团队统筹管理能力。独立管理150人以上业务团队，擅长团队精细化运营、业绩指标管控、人才梯队搭建、风险合规管理及业务产能优化。在交通银行信用卡中心任职期间，带领团队实现业绩持续增长，风险控制指标优良，团队人效提升显著，多次获得行内优秀管理奖项。精通银行信用卡业务全流程管理，熟悉监管政策与合规要求，具备出色的战略执行力与团队领导力。
+                </div>
+            </div>
+
+            <!-- 核心技能 -->
+            <div class="section">
+                <div class="section-title">核心技能 CORE COMPETENCIES</div>
+                <div class="skills-grid">
+                    <div class="skill-item">大型团队统筹管理（150人+）</div>
+                    <div class="skill-item">信用卡业务全流程运营</div>
+                    <div class="skill-item">业绩指标拆解与达成管控</div>
+                    <div class="skill-item">风险合规管理体系建设</div>
+                    <div class="skill-item">人才梯队搭建与培养</div>
+                    <div class="skill-item">业务产能优化与人效提升</div>
+                    <div class="skill-item">客户体验管理与投诉处理</div>
+                    <div class="skill-item">跨部门协作与资源整合</div>
+                </div>
+            </div>
+
+            <!-- 工作经历 -->
+            <div class="section">
+                <div class="section-title">工作经历 WORK EXPERIENCE</div>
+                
+                <div class="job">
+                    <div class="job-header">
+                        <div>
+                            <div class="job-title">团队经理</div>
+                            <div class="job-company">交通银行信用卡中心</div>
+                        </div>
+                        <div class="job-period">2020.06 - 至今</div>
+                    </div>
+                    <div class="job-content">
+                        <ul>
+                            <li>独立管理150人以上信用卡业务团队，负责团队日常运营、业绩达成、人员管理及风险控制</li>
+                            <li>制定并执行团队年度业务规划，分解KPI指标至各业务单元，确保月度、季度、年度目标100%达成</li>
+                            <li>建立完善的团队管理体系，包括绩效考核、激励机制、培训体系及晋升通道，团队人效提升35%</li>
+                            <li>主导风险合规管理，建立事前预防、事中监控、事后复盘的全流程风控机制，不良率控制在行业优秀水平</li>
+                            <li>搭建三级人才梯队，培养储备主管12人，团队骨干流失率控制在8%以下，远低于行业平均水平</li>
+                            <li>优化业务流程，推行标准化作业体系，业务处理效率提升40%，客户满意度提升至98.5%</li>
+                            <li>负责团队合规培训与监管对接，确保业务操作符合银保监会及行内各项合规要求，零重大合规风险事件</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="job">
+                    <div class="job-header">
+                        <div>
+                            <div class="job-title">高级业务主管</div>
+                            <div class="job-company">交通银行信用卡中心</div>
+                        </div>
+                        <div class="job-period">2018.03 - 2020.05</div>
+                    </div>
+                    <div class="job-content">
+                        <ul>
+                            <li>负责50人业务团队日常管理，统筹信用卡营销推广、客户服务及风险管控工作</li>
+                            <li>制定团队业务策略，带领团队连续12个月超额完成业绩指标，季度业绩达成率120%+</li>
+                            <li>建立客户分层管理体系，针对高价值客户制定专属服务方案，客户留存率提升25%</li>
+                            <li>主导团队技能培训项目，设计系统化培训课程，团队成员业务考核通过率提升至95%</li>
+                            <li>协助部门经理进行团队管理，参与制定部门年度业务规划及管理制度优化</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="job">
+                    <div class="job-header">
+                        <div>
+                            <div class="job-title">客户经理</div>
+                            <div class="job-company">交通银行XX分行</div>
+                        </div>
+                        <div class="job-period">2015.07 - 2018.02</div>
+                    </div>
+                    <div class="job-content">
+                        <ul>
+                            <li>负责信用卡客户拓展与维护，完成个人业绩指标，连续24个月业绩排名分行前10%</li>
+                            <li>深入挖掘客户需求，提供综合金融解决方案，成功营销高端信用卡客户500+户</li>
+                            <li>严格执行风险管控要求，确保客户准入合规，个人管户不良率保持0.5%以下</li>
+                            <li>参与新员工带教工作，协助5名新员工快速成长并独立开展业务</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 核心项目经历 -->
+            <div class="section">
+                <div class="section-title">核心项目经历 KEY PROJECTS</div>
+                
+                <div class="project">
+                    <div class="project-name">团队产能提升专项项目</div>
+                    <div class="project-role">项目负责人 | 2023.01 - 2023.12</div>
+                    <div class="project-desc">
+                        针对团队产能瓶颈，主导实施"效能倍增"专项项目。通过优化业务流程、完善激励机制、强化技能培训、推行标杆管理等措施，实现团队人均产能提升45%，月度业务处理量突破历史峰值。项目成果获卡中心管理层高度认可，并在全中心推广复制。
+                    </div>
+                </div>
+
+                <div class="project">
+                    <div class="project-name">风险合规管理体系建设</div>
+                    <div class="project-role">项目牵头人 | 2022.03 - 2022.09</div>
+                    <div class="project-desc">
+                        牵头建立团队风险合规管理体系，制定《团队合规操作手册》，建立三级风险预警机制，开展常态化合规培训20+场。项目实施后，团队合规操作规范率达100%，监管检查零问题，客户投诉率下降60%，风险控制指标位列卡中心前三。
+                    </div>
+                </div>
+
+                <div class="project">
+                    <div class="project-name">人才梯队建设工程</div>
+                    <div class="project-role">项目负责人 | 2021.06 - 2021.12</div>
+                    <div class="project-desc">
+                        针对团队快速发展的人才需求，搭建"雏鹰-飞鹰-精鹰"三级人才培养体系。建立储备主管选拔机制，实施导师带教制度，开展管理技能培训项目。年度内成功培养储备主管12人，团队骨干流失率控制在8%以下，人才储备满足业务扩张需求。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 工作成果 -->
+            <div class="section">
+                <div class="section-title">工作成果 KEY ACHIEVEMENTS</div>
+                <div class="achievements">
+                    <div class="achievement-item">
+                        <div class="achievement-number">150+</div>
+                        <div class="achievement-label">团队管理规模（人）</div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-number">120%</div>
+                        <div class="achievement-label">年度业绩达成率</div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-number">35%</div>
+                        <div class="achievement-label">团队人效提升</div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-number">98.5%</div>
+                        <div class="achievement-label">客户满意度</div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-number">&lt;8%</div>
+                        <div class="achievement-label">骨干流失率</div>
+                    </div>
+                    <div class="achievement-item">
+                        <div class="achievement-number">12人</div>
+                        <div class="achievement-label">培养储备主管</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- 自我评价 -->
+            <div class="section">
+                <div class="section-title">自我评价 PERSONAL EVALUATION</div>
+                <div class="evaluation">
+                    <p><strong>管理理念：</strong>坚持以目标为导向、以结果论英雄的管理理念，注重团队文化建设与人文关怀，善于激发团队潜能，打造高绩效、高凝聚力、高执行力的精英团队。</p>
+                    <p><strong>专业能力：</strong>深耕银行信用卡业务多年，熟悉信用卡业务全流程及监管政策，具备扎实的风险管理功底和合规意识。在团队管理、业绩达成、风险控制等方面积累了丰富的实战经验。</p>
+                    <p><strong>职业素养：</strong>具备强烈的责任心和事业心，工作严谨细致，执行力强。善于沟通协调，具备优秀的跨部门协作能力。保持持续学习，紧跟行业发展趋势，不断提升专业素养和管理水平。</p>
+                    <p><strong>发展愿景：</strong>期望在银行信用卡业务管理领域持续深耕，发挥管理专长和专业优势，为银行创造更大价值，同时实现个人职业生涯的更高突破。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

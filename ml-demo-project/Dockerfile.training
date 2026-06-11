@@ -1,0 +1,35 @@
+# =============================================================
+#  ML 训练镜像
+# =============================================================
+# 用于 CI/CD 中的训练任务
+# =============================================================
+
+FROM python:3.11-slim
+
+LABEL maintainer="ml-demo"
+LABEL description="ML Training Pipeline"
+
+WORKDIR /app
+
+# 系统依赖
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Python 依赖
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 复制源码
+COPY config/ config/
+COPY src/ src/
+COPY api/ api/
+COPY scripts/ scripts/
+
+# 创建模型输出目录
+RUN mkdir -p models && chmod 777 models
+
+ENV PYTHONUNBUFFERED=1
+
+# 默认命令：运行完整 Pipeline
+CMD ["python", "-m", "src.pipeline.pipeline"]

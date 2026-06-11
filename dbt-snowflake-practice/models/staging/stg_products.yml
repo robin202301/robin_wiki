@@ -1,0 +1,30 @@
+# Staging 层：产品数据 schema 配置与测试
+version: 2
+
+models:
+  - name: stg_products
+    description: "产品信息 - 从原始数据清洗并转换价格"
+    columns:
+      - name: product_id
+        description: "产品唯一标识"
+        tests:
+          - unique
+          - not_null
+      - name: name
+        description: "产品名称"
+        tests:
+          - not_null
+      - name: category
+        description: "产品分类"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Electronics', 'Sports', 'Grocery', 'Office']
+      - name: price_usd
+        description: "产品价格（美元）"
+        tests:
+          - not_null
+      - name: created_at
+        description: "产品创建时间"
+        tests:
+          - not_null

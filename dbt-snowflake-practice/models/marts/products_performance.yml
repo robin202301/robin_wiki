@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: products_performance
+    description: "产品销售表现 - 包含销量、收入、排名等指标"
+    columns:
+      - name: product_id
+        description: "产品唯一标识"
+        tests:
+          - unique
+          - not_null
+      - name: total_revenue_usd
+        description: "产品总收入（美元）"
+        tests:
+          - not_null
+      - name: total_units_sold
+        description: "总售出数量"
+      - name: revenue_rank
+        description: "收入排名（全局）"
+      - name: category_revenue_rank
+        description: "品类内收入排名"

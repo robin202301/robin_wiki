@@ -1,0 +1,9 @@
+# packages.yml - dbt 包依赖
+packages:
+  # dbt-utils: 常用工具函数集合
+  - package: dbt-labs/dbt_utils
+    version: [">=1.0.0", "<2.0.0"]
+
+  # dbt-expectations: 数据质量测试扩展
+  - package: calogica/dbt_expectations
+    version: [">=0.9.0", "<1.0.0"]

@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: orders_daily
+    description: "每日订单汇总 - 用于趋势分析和仪表盘"
+    columns:
+      - name: order_date
+        description: "订单日期"
+        tests:
+          - unique
+          - not_null
+      - name: revenue_usd
+        description: "当日收入（美元）"
+        tests:
+          - not_null
+      - name: total_orders
+        description: "当日订单数"
+      - name: return_rate_pct
+        description: "退货率（百分比）"

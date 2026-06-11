@@ -1,0 +1,60 @@
+name: 'dbt_snowflake_practice'
+version: '1.0.0'
+config-version: 2
+
+profile: 'dbt_snowflake_practice'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+seeds:
+  dbt_snowflake_practice:
+    raw_customers:
+      +column_types:
+        customer_id: integer
+        first_name: varchar(50)
+        last_name: varchar(50)
+        email: varchar(100)
+        created_at: timestamp
+    raw_orders:
+      +column_types:
+        order_id: integer
+        customer_id: integer
+        order_date: date
+        status: varchar(20)
+        amount_cents: integer
+    raw_products:
+      +column_types:
+        product_id: integer
+        name: varchar(200)
+        category: varchar(50)
+        price_cents: integer
+        created_at: timestamp
+    raw_order_items:
+      +column_types:
+        order_item_id: integer
+        order_id: integer
+        product_id: integer
+        quantity: integer
+        price_cents: integer
+
+models:
+  dbt_snowflake_practice:
+    staging:
+      +materialized: view
+      +schema: staging
+    intermediate:
+      +materialized: view
+      +schema: intermediate
+    marts:
+      +materialized: table
+      +schema: marts

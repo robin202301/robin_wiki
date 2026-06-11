@@ -1,0 +1,29 @@
+# Staging 层：客户数据 schema 配置与测试
+version: 2
+
+models:
+  - name: stg_customers
+    description: "客户基础信息 - 从原始数据清洗而来"
+    columns:
+      - name: customer_id
+        description: "客户唯一标识"
+        tests:
+          - unique
+          - not_null
+      - name: first_name
+        description: "客户名字"
+        tests:
+          - not_null
+      - name: last_name
+        description: "客户姓氏"
+        tests:
+          - not_null
+      - name: email
+        description: "客户邮箱"
+        tests:
+          - unique
+          - not_null
+      - name: created_at
+        description: "客户创建时间"
+        tests:
+          - not_null

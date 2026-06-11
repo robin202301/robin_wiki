@@ -1,0 +1,16 @@
+product_id,name,category,price_cents,created_at
+1,Wireless Bluetooth Headphones,Electronics,5999,2023-01-01 00:00:00
+2,USB-C Charging Cable,Electronics,1299,2023-01-01 00:00:00
+3,Stainless Steel Water Bottle,Sports,2499,2023-01-01 00:00:00
+4,Running Shoes,Sports,8999,2023-01-05 00:00:00
+5,Organic Green Tea (50 bags),Grocery,1599,2023-01-10 00:00:00
+6,Notebook Set (3-pack),Office,899,2023-01-15 00:00:00
+7,Mechanical Keyboard,Electronics,12999,2023-02-01 00:00:00
+8,Yoga Mat,Sports,3499,2023-02-10 00:00:00
+9,Dark Chocolate Bar (6-pack),Grocery,2199,2023-02-15 00:00:00
+10,Portable Phone Stand,Electronics,1999,2023-03-01 00:00:00
+11,Insulated Coffee Mug,Sports,1799,2023-03-10 00:00:00
+12,Premium Ballpoint Pen,Office,3999,2023-03-15 00:00:00
+13,Wireless Mouse,Electronics,3499,2023-04-01 00:00:00
+14,Resistance Bands Set,Sports,1999,2023-04-10 00:00:00
+15,Trail Mix (1kg),Grocery,1899,2023-05-01 00:00:00

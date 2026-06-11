@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: customers
+    description: "客户全貌表 - 包含客户生命周期价值、订单统计、分群等核心指标"
+    columns:
+      - name: customer_id
+        description: "客户唯一标识（主键）"
+        tests:
+          - unique
+          - not_null
+      - name: full_name
+        description: "客户全名"
+      - name: lifetime_revenue_usd
+        description: "客户终身收入（美元）"
+        tests:
+          - not_null
+      - name: customer_segment
+        description: "客户分群 (loyal/repeat/new/prospect)"
+        tests:
+          - accepted_values:
+              values: ['loyal', 'repeat', 'new', 'prospect']
+      - name: avg_order_value_usd
+        description: "平均订单金额"

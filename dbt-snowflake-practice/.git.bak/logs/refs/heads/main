@@ -1,0 +1,2 @@
+0000000000000000000000000000000000000000 dfb9415255dd681c5f92abb7a110f9c878d6a577 robin202301 <robin202301@users.noreply.github.com> 1781164594 +0000	commit (initial): feat: initial commit - dbt + Snowflake e-commerce practice project
+dfb9415255dd681c5f92abb7a110f9c878d6a577 4a63b0a27d2b41eebc3463bd8f48498b86f55a2a robin202301 <robin202301@users.noreply.github.com> 1781168512 +0000	commit: fix: replace SQL comments with YAML comments in staging yml files

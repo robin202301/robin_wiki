@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: int_orders_enriched
+    description: "订单丰富表 - 关联客户信息和订单明细汇总"
+    columns:
+      - name: order_id
+        description: "订单唯一标识"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "客户ID"
+        tests:
+          - not_null
+      - name: order_date
+        description: "订单日期"
+      - name: status
+        description: "订单状态"
+      - name: order_amount_usd
+        description: "订单金额（美元）"
+      - name: first_name
+        description: "客户名字"
+      - name: last_name
+        description: "客户姓氏"
+      - name: unique_products_count
+        description: "订单中不同产品数"
+      - name: total_quantity
+        description: "订单总数量"

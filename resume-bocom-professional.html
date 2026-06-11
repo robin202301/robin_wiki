@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专业简历 - 电话销售团队经理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'Segoe UI', Tahoma, Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .resume-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            background: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            min-height: 1400px;
+        }
+
+        /* 左侧边栏 */
+        .sidebar {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 30px;
+        }
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            border: 4px solid rgba(255,255,255,0.3);
+        }
+
+        .name {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .title {
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
+            font-weight: 300;
+        }
+
+        .sidebar-section {
+            margin-bottom: 35px;
+        }
+
+        .sidebar-section h3 {
+            font-size: 16px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            letter-spacing: 1px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .contact-icon {
+            width: 30px;
+            height: 30px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 14px;
+        }
+
+        .skill-bar {
+            margin-bottom: 18px;
+        }
+
+        .skill-name {
+            font-size: 14px;
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .skill-progress {
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .language-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .language-level {
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+        }
+
+        /* 右侧主体 */
+        .main-content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #1e3c72;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            margin-right: 15px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            color: #1e3c72;
+            font-weight: bold;
+        }
+
+        .profile-summary {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #555;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #2a5298;
+            border-radius: 4px;
+        }
+
+        .experience-item {
+            margin-bottom: 30px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .experience-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            background: #2a5298;
+            border-radius: 50%;
+        }
+
+        .experience-item::after {
+            content: '';
+            position: absolute;
+            left: 3px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% - 20px);
+            background: #e0e0e0;
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+
+        .job-title {
+            font-size: 18px;
+            color: #1e3c72;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .company {
+            font-size: 15px;
+            color: #2a5298;
+            margin-bottom: 4px;
+        }
+
+        .period {
+            font-size: 13px;
+            color: #888;
+            background: #f0f0f0;
+            padding: 4px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .achievement-list {
+            list-style: none;
+            margin-top: 12px;
+        }
+
+        .achievement-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .achievement-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #2a5298;
+            font-weight: bold;
+        }
+
+        .highlight-number {
+            color: #2a5298;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .project-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2a5298;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 12px;
+        }
+
+        .project-name {
+            font-size: 16px;
+            color: #1e3c72;
+            font-weight: bold;
+        }
+
+        .project-role {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .project-result {
+            margin-top: 12px;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+        }
+
+        .result-tag {
+            display: inline-block;
+            background: #2a5298;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-right: 8px;
+            margin-bottom: 6px;
+        }
+
+        .education-item {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .edu-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-right: 20px;
+        }
+
+        .edu-info h4 {
+            font-size: 16px;
+            color: #1e3c72;
+            margin-bottom: 4px;
+        }
+
+        .edu-info p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 打印样式 */
+        @media print {
+            body {
+                background: white;
+            }
+            .resume-container {
+                box-shadow: none;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="resume-container">
+        <!-- 左侧边栏 -->
+        <div class="sidebar">
+            <div class="profile-section">
+                <div class="avatar">👤</div>
+                <div class="name">[您的姓名]</div>
+                <div class="title">电话销售团队经理</div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>📞 联系方式</h3>
+                <div class="contact-item">
+                    <div class="contact-icon">📱</div>
+                    <div>[您的电话]</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <div>[您的邮箱]</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>上海</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">🎂</div>
+                    <div>32岁</div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>💼 核心技能</h3>
+                <div class="skill-bar">
+                    <div class="skill-name">
+                        <span>团队管理</span>
+                        <span>95%</span>
+                    </div>
+                    <div class="skill-progress">
+                        <div class="skill-fill" style="width: 95%"></div>
+                    </div>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-name">
+                        <span>销售策略</span>
+                        <span>90%</span>
+                    </div>
+                    <div class="skill-progress">
+                        <div class="skill-fill" style="width: 90%"></div>
+                    </div>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-name">
+                        <span>数据分析</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="skill-progress">
+                        <div class="skill-fill" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-name">
+                        <span>风控合规</span>
+                        <span>88%</span>
+                    </div>
+                    <div class="skill-progress">
+                        <div class="skill-fill" style="width: 88%"></div>
+                    </div>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-name">
+                        <span>培训带教</span>
+                        <span>92%</span>
+                    </div>
+                    <div class="skill-progress">
+                        <div class="skill-fill" style="width: 92%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>🌐 语言能力</h3>
+                <div class="language-item">
+                    <span>普通话</span>
+                    <span class="language-level">母语</span>
+                </div>
+                <div class="language-item">
+                    <span>英语</span>
+                    <span class="language-level">CET-6</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>🎯 求职意向</h3>
+                <div style="font-size: 14px; line-height: 1.8;">
+                    <div>• 电话销售团队经理</div>
+                    <div>• 电销业务主管</div>
+                    <div>• 期望薪资: 25-35K</div>
+                    <div>• 到岗时间: 1个月内</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧主体 -->
+        <div class="main-content">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon">📋</div>
+                    <div class="section-title">职业概述</div>
+                </div>
+                <div class="profile-summary">
+                    交通银行信用卡中心资深电销管理者，<strong>9年</strong>信用卡电话销售团队管理经验。从一线电销专员成长为管理<strong>40+人</strong>团队的资深经理，深谙信用卡电销业务全链条运作。擅长团队搭建、业绩突破、流程优化与风控管理，累计带领团队创造超过<strong>15亿元</strong>发卡业绩，客户满意度持续保持<strong>95%</strong>以上。
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon">💼</div>
+                    <div class="section-title">工作经历</div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="job-title">电话销售团队经理</div>
+                            <div class="company">交通银行信用卡中心</div>
+                        </div>
+                        <div class="period">2020年 - 至今</div>
+                    </div>
+                    <ul class="achievement-list">
+                        <li>管理<strong class="highlight-number">40人</strong>电销团队，下设4个小组，每组10人</li>
+                        <li>2024年团队发卡量突破<strong class="highlight-number">3.2万张</strong>，完成率<strong>128%</strong>，排名全国第3</li>
+                        <li>2023年团队业绩达<strong class="highlight-number">5.8亿元</strong>，超额完成KPI <strong>35%</strong></li>
+                        <li>建立"师徒制"培养体系，新人3个月留存率从60%提升至<strong>85%</strong></li>
+                        <li>设计阶梯式激励方案，团队月均业绩波动率降低<strong>40%</strong></li>
+                    </ul>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="job-title">高级电销专员 / 组长</div>
+                            <div class="company">交通银行信用卡中心</div>
+                        </div>
+                        <div class="period">2017年 - 2020年</div>
+                    </div>
+                    <ul class="achievement-list">
+                        <li>连续<strong>18个月</strong>个人发卡量排名第一，月均发卡<strong class="highlight-number">180+张</strong></li>
+                        <li>2019年个人年度业绩突破<strong class="highlight-number">2000万</strong>，获"金牌销售"称号</li>
+                        <li>客户转化率从行业平均8%提升至<strong>18%</strong></li>
+                        <li>带领8人小组，月度业绩完成率连续12个月超<strong>100%</strong></li>
+                    </ul>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div>
+                            <div class="job-title">一线电销专员</div>
+                            <div class="company">交通银行信用卡中心</div>
+                        </div>
+                        <div class="period">2015年 - 2017年</div>
+                    </div>
+                    <ul class="achievement-list">
+                        <li>入职3个月即成为团队TOP3销售</li>
+                        <li>6个月内晋升为高级专员</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon">🚀</div>
+                    <div class="section-title">项目经历</div>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-header">
+                        <div class="project-name">电销团队数字化转型项目</div>
+                        <div class="period">2023年6月 - 2023年12月</div>
+                    </div>
+                    <div class="project-role">角色：业务负责人</div>
+                    <ul class="achievement-list">
+                        <li>主导智能外呼系统试点，设计人机协作流程</li>
+                        <li>优化话术库，针对不同类型客户制定差异化策略</li>
+                    </ul>
+                    <div class="project-result">
+                        <span class="result-tag">接通率↑35%</span>
+                        <span class="result-tag">产能↑22%</span>
+                        <span class="result-tag">成本↓15%</span>
+                        <span class="result-tag">创新奖</span>
+                    </div>
+                </div>
+
+                <div class="project-item">
+                    <div class="project-header">
+                        <div class="project-name">新人培养体系优化</div>
+                        <div class="period">2022年1月 - 2022年9月</div>
+                    </div>
+                    <div class="project-role">角色：项目负责人</div>
+                    <ul class="achievement-list">
+                        <li>重新设计新人培训体系，建立"师徒制"1对1带教</li>
+                        <li>制定阶段性考核标准，设置缓冲期</li>
+                    </ul>
+                    <div class="project-result">
+                        <span class="result-tag">留存率↑25%</span>
+                        <span class="result-tag">首月产能↑40%</span>
+                        <span class="result-tag">培训成本↓25%</span>
+                        <span class="result-tag">全中心推广</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon">🎓</div>
+                    <div class="section-title">教育背景</div>
+                </div>
+                <div class="education-item">
+                    <div class="edu-icon">🎓</div>
+                    <div class="edu-info">
+                        <h4>上海大学</h4>
+                        <p>工商管理 | 本科 | 2011年 - 2015年</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-icon">🏆</div>
+                    <div class="section-title">荣誉奖项</div>
+                </div>
+                <ul class="achievement-list">
+                    <li><strong>2024年</strong> - 交行信用卡中心"优秀团队经理"</li>
+                    <li><strong>2023年</strong> - 全国电销团队业绩排名第3</li>
+                    <li><strong>2022年</strong> - 交行信用卡中心"管理创新奖"</li>
+                    <li><strong>2020年</strong> - "金牌团队经理"称号</li>
+                    <li><strong>2019年</strong> - 个人年度业绩冠军，"金牌销售"</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
