@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>选品Agent</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #2563eb;
+            --primary-light: #dbeafe;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding-bottom: 70px;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary), #1d4ed8);
+            color: white;
+            padding: 20px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header h1 { font-size: 20px; font-weight: 600; }
+        .header p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+        
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding: 12px 16px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+        }
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 18px; font-weight: 700; color: var(--primary); }
+        .stat-label { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .tab {
+            flex: 1;
+            min-width: 70px;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+        }
+        .tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+        
+        /* Content */
+        .content { padding: 12px 16px; }
+        
+        /* Product Card */
+        .product-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 14px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .product-name { font-size: 15px; font-weight: 600; flex: 1; }
+        .product-score {
+            background: var(--primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .product-score.high { background: var(--success); }
+        .product-score.medium { background: var(--warning); }
+        .product-score.low { background: var(--text-secondary); }
+        
+        .product-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        .tag {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+        .tag.category { background: #fef3c7; color: #92400e; }
+        .tag.stage { background: #e0e7ff; color: #3730a3; }
+        
+        .product-scores {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+        .score-item { text-align: center; }
+        .score-bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            margin-bottom: 4px;
+            overflow: hidden;
+        }
+        .score-fill {
+            height: 100%;
+            border-radius: 2px;
+            background: var(--primary);
+        }
+        .score-label { font-size: 10px; color: var(--text-secondary); }
+        .score-value { font-size: 11px; font-weight: 600; }
+        
+        /* Action buttons */
+        .product-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+        .btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-secondary { background: var(--border); color: var(--text); }
+        .btn-success { background: var(--success); color: white; }
+        
+        /* FAB */
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: flex-end;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            width: 100%;
+            max-height: 85vh;
+            border-radius: 16px 16px 0 0;
+            overflow-y: auto;
+            padding: 20px 16px;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .modal-title { font-size: 18px; font-weight: 600; }
+        .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-secondary); }
+        
+        /* Form */
+        .form-group { margin-bottom: 14px; }
+        .form-label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--text-secondary); }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--bg);
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .form-textarea { min-height: 80px; resize: vertical; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        
+        /* Bottom nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 50;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4px 12px;
+            color: var(--text-secondary);
+            font-size: 10px;
+        }
+        .nav-item.active { color: var(--primary); }
+        .nav-icon { font-size: 20px; margin-bottom: 2px; }
+        
+        /* Loading */
+        .loading { text-align: center; padding: 40px; color: var(--text-secondary); }
+        .loading::after { content: '...'; animation: dots 1.5s infinite; }
+        @keyframes dots { 0%, 20% { content: ''; } 40% { content: '.'; } 60% { content: '..'; } 80%, 100% { content: '...'; } }
+        
+        /* Empty state */
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
+        .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+        
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            z-index: 300;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .toast.show { opacity: 1; }
+        
+        /* Detail view */
+        .detail-section { margin-bottom: 20px; }
+        .detail-section h3 { font-size: 14px; font-weight: 600; margin-bottom: 10px; color: var(--text-secondary); }
+        .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .detail-item { background: var(--bg); padding: 10px; border-radius: 8px; }
+        .detail-item .label { font-size: 11px; color: var(--text-secondary); }
+        .detail-item .value { font-size: 14px; font-weight: 600; margin-top: 4px; }
+        
+        /* Recommendation badge */
+        .recommendation {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .recommendation.A { background: #dcfce7; color: #166534; }
+        .recommendation.B { background: #dbeafe; color: #1e40af; }
+        .recommendation.C { background: #fef3c7; color: #92400e; }
+        .recommendation.D { background: #f1f5f9; color: #64748b; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 选品Agent</h1>
+        <p>精品配饰 × 美妆工具 | 东南亚 × 俄罗斯</p>
+    </div>
+    
+    <div class="stats" id="stats">
+        <div class="stat-item">
+            <div class="stat-value" id="stat-total">-</div>
+            <div class="stat-label">总SKU</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="stat-l4">-</div>
+            <div class="stat-label">测品中</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="stat-approved">-</div>
+            <div class="stat-label">已入选</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value" id="stat-avg-score">-</div>
+            <div class="stat-label">均分</div>
+        </div>
+    </div>
+    
+    <div class="tabs">
+        <div class="tab active" data-filter="all">全部</div>
+        <div class="tab" data-filter="L1">L1海选</div>
+        <div class="tab" data-filter="L2">L2筛选</div>
+        <div class="tab" data-filter="L3">L3评估</div>
+        <div class="tab" data-filter="L4">L4测品</div>
+        <div class="tab" data-filter="L5">L5爆品</div>
+    </div>
+    
+    <div class="content" id="product-list">
+        <div class="loading">加载中</div>
+    </div>
+    
+    <button class="fab" onclick="openAddModal()">+</button>
+    
+    <!-- Add Product Modal -->
+    <div class="modal-overlay" id="add-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">添加产品</div>
+                <button class="modal-close" onclick="closeAddModal()">×</button>
+            </div>
+            <form id="add-form" onsubmit="addProduct(event)">
+                <div class="form-group">
+                    <label class="form-label">产品名称 *</label>
+                    <input type="text" class="form-input" name="name" required placeholder="如：复古珍珠耳环">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">品类 *</label>
+                        <select class="form-select" name="category" required>
+                            <option value="accessory">精品配饰</option>
+                            <option value="beauty_tool">美妆工具</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">来源</label>
+                        <select class="form-select" name="source_platform">
+                            <option value="1688">1688</option>
+                            <option value="拼多多">拼多多</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">成本(元) *</label>
+                        <input type="number" class="form-input" name="cost_price_cny" required step="0.01" placeholder="15.00">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">重量(g)</label>
+                        <input type="number" class="form-input" name="weight_g" placeholder="30">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">目标市场</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
+                        <label style="display:flex;align-items:center;gap:4px;font-size:12px;">
+                            <input type="checkbox" name="markets" value="泰国" checked> 泰国
+                        </label>
+                        <label style="display:flex;align-items:center;gap:4px;font-size:12px;">
+                            <input type="checkbox" name="markets" value="越南" checked> 越南
+                        </label>
+                        <label style="display:flex;align-items:center;gap:4px;font-size:12px;">
+                            <input type="checkbox" name="markets" value="菲律宾"> 菲律宾
+                        </label>
+                        <label style="display:flex;align-items:center;gap:4px;font-size:12px;">
+                            <input type="checkbox" name="markets" value="马来西亚"> 马来
+                        </label>
+                        <label style="display:flex;align-items:center;gap:4px;font-size:12px;">
+                            <input type="checkbox" name="markets" value="印尼"> 印尼
+                        </label>
+                        <label style="display:flex;align-items:center;gap:4px;font-size:12px;">
+                            <input type="checkbox" name="markets" value="俄罗斯"> 俄罗斯
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">目标平台</label>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
+                        <label style="display:flex;align-items:center;gap:4px;font-size:12px;">
+                            <input type="checkbox" name="platforms" value="TikTok Shop" checked> TikTok Shop
+                        </label>
+                        <label style="display:flex;align-items:center;gap:4px;font-size:12px;">
+                            <input type="checkbox" name="platforms" value="Shopee" checked> Shopee
+                        </label>
+                        <label style="display:flex;align-items:center;gap:4px;font-size:12px;">
+                            <input type="checkbox" name="platforms" value="Lazada"> Lazada
+                        </label>
+                        <label style="display:flex;align-items:center;gap:4px;font-size:12px;">
+                            <input type="checkbox" name="platforms" value="速卖通"> 速卖通
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">备注</label>
+                    <textarea class="form-textarea" name="notes" placeholder="卖点、特色、卖点关键词..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">来源链接</label>
+                    <input type="url" class="form-input" name="source_url" placeholder="https://...">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;padding:12px;font-size:14px;margin-top:10px;">
+                    添加并评分
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Detail Modal -->
+    <div class="modal-overlay" id="detail-modal">
+        <div class="modal" id="detail-content">
+        </div>
+    </div>
+    
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const API = window.location.origin;
+        let products = [];
+        let currentFilter = 'all';
+        
+        // Fetch products
+        async function loadProducts() {
+            try {
+                const res = await fetch(`${API}/products/`);
+                products = await res.json();
+                renderProducts();
+                updateStats();
+            } catch(e) {
+                document.getElementById('product-list').innerHTML = '<div class="empty-state"><div class="icon">📦</div><p>暂无产品，点击 + 添加</p></div>';
+            }
+        }
+        
+        // Render products
+        function renderProducts() {
+            const list = document.getElementById('product-list');
+            let filtered = products;
+            if (currentFilter !== 'all') {
+                filtered = products.filter(p => p.funnel_stage === currentFilter);
+            }
+            
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="icon">🔍</div><p>该阶段暂无产品</p></div>';
+                return;
+            }
+            
+            list.innerHTML = filtered.map(p => {
+                const scoreClass = p.total_score >= 75 ? 'high' : p.total_score >= 55 ? 'medium' : 'low';
+                const rec = getRecommendation(p.total_score);
+                return `
+                <div class="product-card" onclick="showDetail(${p.id})">
+                    <div class="product-header">
+                        <div class="product-name">${p.name}</div>
+                        <div class="product-score ${scoreClass}">${p.total_score.toFixed(0)}</div>
+                    </div>
+                    <div class="product-meta">
+                        <span class="tag category">${p.category === 'accessory' ? '配饰' : '美妆'}</span>
+                        <span class="tag stage">${p.funnel_stage}</span>
+                        <span class="recommendation ${rec.level}">${rec.level}级 · ${rec.action}</span>
+                    </div>
+                    <div class="product-scores">
+                        <div class="score-item">
+                            <div class="score-bar"><div class="score-fill" style="width:${p.scores.video_suitability || 0}%"></div></div>
+                            <div class="score-label">视频</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-bar"><div class="score-fill" style="width:${p.scores.profit_potential || 0}%"></div></div>
+                            <div class="score-label">利润</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-bar"><div class="score-fill" style="width:${p.scores.competition || 0}%"></div></div>
+                            <div class="score-label">竞争</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-bar"><div class="score-fill" style="width:${p.scores.trend || 0}%"></div></div>
+                            <div class="score-label">趋势</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-bar"><div class="score-fill" style="width:${p.scores.supply_chain || 0}%"></div></div>
+                            <div class="score-label">供应</div>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+        
+        // Stats
+        function updateStats() {
+            document.getElementById('stat-total').textContent = products.length;
+            document.getElementById('stat-l4').textContent = products.filter(p => p.funnel_stage === 'L4').length;
+            document.getElementById('stat-approved').textContent = products.filter(p => p.status === 'approved' || p.status === 'scaling').length;
+            const avg = products.length > 0 ? (products.reduce((a,p) => a + p.total_score, 0) / products.length).toFixed(0) : '-';
+            document.getElementById('stat-avg-score').textContent = avg;
+        }
+        
+        // Recommendation
+        function getRecommendation(score) {
+            if (score >= 80) return { level: 'A', action: '立即测试' };
+            if (score >= 65) return { level: 'B', action: '优先评估' };
+            if (score >= 50) return { level: 'C', action: '持续关注' };
+            return { level: 'D', action: '暂时搁置' };
+        }
+        
+        // Detail view
+        async function showDetail(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            
+            const rec = getRecommendation(p.total_score);
+            const content = document.getElementById('detail-content');
+            content.innerHTML = `
+                <div class="modal-header">
+                    <div class="modal-title">${p.name}</div>
+                    <button class="modal-close" onclick="closeDetailModal()">×</button>
+                </div>
+                <div class="detail-section">
+                    <h3>基本信息</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="label">品类</div>
+                            <div class="value">${p.category === 'accessory' ? '精品配饰' : '美妆工具'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="label">成本</div>
+                            <div class="value">¥${p.cost_price_cny}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="label">重量</div>
+                            <div class="value">${p.weight_g}g</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="label">来源</div>
+                            <div class="value">${p.source_platform || '-'}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <h3>评分详情 (总分 ${p.total_score.toFixed(1)})</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <div class="label">视频适配</div>
+                            <div class="value">${(p.scores.video_suitability || 0).toFixed(0)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="label">利润潜力</div>
+                            <div class="value">${(p.scores.profit_potential || 0).toFixed(0)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="label">竞争优势</div>
+                            <div class="value">${(p.scores.competition || 0).toFixed(0)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="label">趋势匹配</div>
+                            <div class="value">${(p.scores.trend || 0).toFixed(0)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="label">供应链</div>
+                            <div class="value">${(p.scores.supply_chain || 0).toFixed(0)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="label">推荐级别</div>
+                            <div class="value"><span class="recommendation ${rec.level}">${rec.level}</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <h3>漏斗阶段</h3>
+                    <div style="display:flex;gap:8px;">
+                        ${['L1','L2','L3','L4','L5'].map(s => `
+                            <button class="btn ${p.funnel_stage === s ? 'btn-primary' : 'btn-secondary'}" 
+                                onclick="updateStage(${p.id}, '${s}')" style="flex:1;">${s}</button>
+                        `).join('')}
+                    </div>
+                </div>
+                ${p.notes ? `<div class="detail-section"><h3>备注</h3><p style="font-size:13px;color:var(--text-secondary);">${p.notes}</p></div>` : ''}
+                <div class="product-actions">
+                    <button class="btn btn-secondary" onclick="calcProfit(${p.id})">💰 利润计算</button>
+                    <button class="btn btn-primary" onclick="genListing(${p.id})">📝 生成Listing</button>
+                    <button class="btn btn-success" onclick="genScript(${p.id})">🎬 视频脚本</button>
+                </div>
+            `;
+            document.getElementById('detail-modal').classList.add('active');
+        }
+        
+        // Update stage
+        async function updateStage(id, stage) {
+            await fetch(`${API}/products/${id}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({funnel_stage: stage})
+            });
+            await loadProducts();
+            showDetail(id);
+            showToast(`已更新到 ${stage}`);
+        }
+        
+        // Profit calc
+        async function calcProfit(id) {
+            const price = prompt('输入预期售价（USD）：');
+            if (!price) return;
+            const market = prompt('选择市场（泰国/越南/菲律宾/马来西亚/印尼/俄罗斯）：', '泰国');
+            if (!market) return;
+            
+            const res = await fetch(`${API}/analysis/profit`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    product_id: id,
+                    selling_price_usd: parseFloat(price),
+                    platform: 'TikTok Shop',
+                    market: market
+                })
+            });
+            const data = await res.json();
+            alert(`💰 利润分析\n售价: $${data.selling_price_usd}\n成本: $${data.cost_price_usd}\n物流: $${data.shipping_cost_usd}\n佣金: $${data.platform_fee_usd}\n广告: $${data.ad_cost_usd}\n毛利: $${data.gross_profit_usd}\n毛利率: ${data.gross_margin_pct}%`);
+        }
+        
+        // Generate listing
+        async function genListing(id) {
+            const lang = prompt('选择语言（en/th/vi/id/ms/ru）：', 'en');
+            if (!lang) return;
+            showToast('生成中...');
+            
+            const res = await fetch(`${API}/listings/generate`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    product_id: id,
+                    language: lang,
+                    platform: 'TikTok Shop'
+                })
+            });
+            const data = await res.json();
+            alert(`📝 Listing\n\n标题: ${data.title}\n\n描述: ${data.description.substring(0, 300)}...`);
+        }
+        
+        // Generate script
+        async function genScript(id) {
+            const lang = prompt('选择语言（en/th/vi/id/ms/ru）：', 'en');
+            if (!lang) return;
+            showToast('生成中...');
+            
+            const res = await fetch(`${API}/listings/video-script/${id}?language=${lang}&duration=30`);
+            const data = await res.json();
+            alert(`🎬 视频脚本\n\n${data.script}`);
+        }
+        
+        // Add product
+        function openAddModal() { document.getElementById('add-modal').classList.add('active'); }
+        function closeAddModal() { document.getElementById('add-modal').classList.remove('active'); }
+        function closeDetailModal() { document.getElementById('detail-modal').classList.remove('active'); }
+        
+        async function addProduct(e) {
+            e.preventDefault();
+            const form = e.target;
+            const markets = [...form.querySelectorAll('input[name="markets"]:checked')].map(c => c.value);
+            const platforms = [...form.querySelectorAll('input[name="platforms"]:checked')].map(c => c.value);
+            
+            const data = {
+                name: form.name.value,
+                category: form.category.value,
+                source_platform: form.source_platform.value,
+                cost_price_cny: parseFloat(form.cost_price_cny.value),
+                weight_g: parseInt(form.weight_g.value) || 0,
+                source_url: form.source_url.value || null,
+                notes: form.notes.value || null,
+                target_markets: markets,
+                target_platforms: platforms
+            };
+            
+            const res = await fetch(`${API}/products/`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            
+            if (res.ok) {
+                closeAddModal();
+                form.reset();
+                await loadProducts();
+                showToast('✅ 添加成功，已自动评分');
+            } else {
+                showToast('❌ 添加失败');
+            }
+        }
+        
+        // Toast
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+        
+        // Tabs
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentFilter = tab.dataset.filter;
+                renderProducts();
+            });
+        });
+        
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) overlay.classList.remove('active');
+            });
+        });
+        
+        // Init
+        loadProducts();
+    </script>
+</body>
+</html>
